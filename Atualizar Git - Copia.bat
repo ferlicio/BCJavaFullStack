@@ -4,7 +4,7 @@ cls
 
 
 git add .
-git commit -m "mudei %date%"
+git commit -m "atualização %date%"
 git push origin main
 echo Press Enter...
-read
+@pause
