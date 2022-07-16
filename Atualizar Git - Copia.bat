@@ -4,7 +4,7 @@ cls
 
 
 git add .
-git commit -am "made changes"
+git commit -m "mudei %date%"
 git push origin main
 echo Press Enter...
 read
