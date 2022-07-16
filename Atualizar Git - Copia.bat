@@ -6,5 +6,3 @@ cls
 git add .
 git commit -m "atualização %date%"
 git push origin main
-echo Press Enter...
-@pause
