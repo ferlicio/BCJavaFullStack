@@ -15,7 +15,7 @@ public class CacheConfig {
               RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer());
 
       @Bean
-        public RedisCacheConfiguration cacheConfiguration() { // Configuração do cache do Redis
+        public RedisCacheConfiguration cacheConfiguration() { // Customiza a configuração padrão do cache do Redis
             return RedisCacheConfiguration
                     .defaultCacheConfig() // customizar o cache
                     .entryTtl(Duration.ofMinutes(5)) // tempo de vida do cache
@@ -31,6 +31,14 @@ public class CacheConfig {
                                 .entryTtl(Duration.ofMinutes(5))
                                 .serializeValuesWith(serializationPair)
                     ).withCacheConfiguration("chamadosCache",
+                            RedisCacheConfiguration.defaultCacheConfig()
+                                    .entryTtl(Duration.ofMinutes(5))
+                                    .serializeValuesWith(serializationPair)
+                    ).withCacheConfiguration("cargosCache",
+                            RedisCacheConfiguration.defaultCacheConfig()
+                                    .entryTtl(Duration.ofMinutes(5))
+                                    .serializeValuesWith(serializationPair)
+                    ).withCacheConfiguration("enderecoCache",
                             RedisCacheConfiguration.defaultCacheConfig()
                                     .entryTtl(Duration.ofMinutes(5))
                                     .serializeValuesWith(serializationPair)

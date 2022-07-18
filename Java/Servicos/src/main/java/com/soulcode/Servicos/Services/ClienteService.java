@@ -34,6 +34,7 @@ public class ClienteService {
         );
     }
 
+    @CachePut(value = "clienteCache", key = "#cliente.idCliente")
     public Cliente inserirCliente(Cliente cliente) {
         //por precaução vamos limpar o campo de id do cliente
         cliente.setIdCliente(null);

@@ -5,6 +5,7 @@ import com.soulcode.Servicos.Models.Pagamento;
 import com.soulcode.Servicos.Repositories.PagamentoRepository;
 import com.soulcode.Servicos.Repositories.ChamadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +21,12 @@ public class PagamentoService {
     ChamadoRepository chamadoRepository;
 
     // findAll (método da Spring Data) - busca todos os registros
+    @Cacheable("pagamentoCache")
     public List<Pagamento> mostrarTodosPagamentos(){
         return pagamentoRepository.findAll();	}
 
     // findById - busca um registro pela sua chave primária
+    @Cacheable(value = "pagamentosCache", key = "#idPagamento")
     public Pagamento mostrarUmPagamento(Integer idPagamento) {
         Optional<Pagamento> pagamento = pagamentoRepository.findById(idPagamento);
         return pagamento.orElseThrow();
