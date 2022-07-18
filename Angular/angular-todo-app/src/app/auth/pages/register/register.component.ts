@@ -31,7 +31,11 @@ export class RegisterComponent implements OnInit {
     this.authService.signUpWithEmailAndPassword(email, password)
     .subscribe(
       () => {
-        this.snackbar.open('Usuário cadastrado com sucesso!', 'Ok', { duration: 3000 })
+        this.snackbar.open('Registrado com sucesso!', 'Ok', { 
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
       }
     )
   }
