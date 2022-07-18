@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'todos',
     loadChildren: () => import('./todos/todos.module').then(m => m.TodosModule)//lazy loading
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)//auth module com lazy loading
   }
 ];
 
