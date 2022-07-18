@@ -42,6 +42,14 @@ public class CacheConfig {
                             RedisCacheConfiguration.defaultCacheConfig()
                                     .entryTtl(Duration.ofMinutes(5))
                                     .serializeValuesWith(serializationPair)
+                    ).withCacheConfiguration("pagamentoCache",
+                            RedisCacheConfiguration.defaultCacheConfig()
+                                    .entryTtl(Duration.ofMinutes(5))
+                                    .serializeValuesWith(serializationPair)
+                    ).withCacheConfiguration("userCache",
+                            RedisCacheConfiguration.defaultCacheConfig()
+                                    .entryTtl(Duration.ofSeconds(5))
+                                    .serializeValuesWith(serializationPair)
                     );
 
         }
