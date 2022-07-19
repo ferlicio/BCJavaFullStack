@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { from, tap } from 'rxjs';
 import { Todo } from 'src/app/models/Todo';
 import { User } from 'src/app/models/User';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,13 @@ export class AuthService {
   }
 
   signInWithEmailAndPassword(email: string, password: string) {
-    return from(this.authentication.signInWithEmailAndPassword(email, password))
+    return from(this.authentication.signInWithEmailAndPassword(email, password))//retorna uma promisse - usa o from para transformar a promisse em um observable
+  }
+
+  signInWithGoogle() {
+    const googleProvider = new GoogleAuthProvider()
+
+    return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
   }
 
   signOut() {
@@ -78,4 +85,6 @@ export class AuthService {
       })
     )
   }
+
+
 }
