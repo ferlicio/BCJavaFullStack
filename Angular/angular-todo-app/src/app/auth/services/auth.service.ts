@@ -55,4 +55,8 @@ export class AuthService {
       })
     )
   }
+
+  signInWithEmailAndPassword(email: string, password: string) {
+    return from(this.authentication.signInWithEmailAndPassword(email, password))
+  }
 }

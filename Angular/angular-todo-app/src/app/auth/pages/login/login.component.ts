@@ -27,7 +27,16 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    //const { email, password } = this.loginForm.value;     //desestruturação - pega o valor do formulário e armazena em variáveis separadas 
+    const email = this.loginForm.value.email;
+    const password = this.loginForm.value.password;
 
+    this.authService.signInWithEmailAndPassword(email, password)
+    .subscribe(
+      () => {
+        this.router.navigateByUrl('/todos');
+      }
+    )
   }
 
   signInWithGoogle() {
