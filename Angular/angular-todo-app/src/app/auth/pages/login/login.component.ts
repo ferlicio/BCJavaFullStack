@@ -40,6 +40,11 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithGoogle() {
-    
+    this.authService.signInWithGoogle()
+    .subscribe(
+      () => {
+        this.router.navigateByUrl('/todos');
+      }
+    )
   }
 }

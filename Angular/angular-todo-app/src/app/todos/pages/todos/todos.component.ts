@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Todo } from '../../../models/Todo';
+import { TodosService } from '../../services/todos.service';
 
 @Component({
   selector: 'app-todos',
@@ -20,7 +21,8 @@ export class TodosComponent implements OnInit {
 
   constructor(
     private snackbar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private todosService: TodosService
   ) { }
 
   ngOnInit(): void {
@@ -28,7 +30,12 @@ export class TodosComponent implements OnInit {
   }
 
   loadTodos(): void {
-
+    this.todosService.getTodos()
+    .subscribe(
+      (receivedTodos) => {
+        this.todos = receivedTodos
+      }
+    )
   }
 
   create(): void {

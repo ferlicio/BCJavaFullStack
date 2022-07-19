@@ -29,6 +29,34 @@ export class AuthService {
     return this.authentication.authState
   }
 
+  private saveUserData() {
+    return tap((credentials:firebase.default.auth.UserCredential) => {
+      //recuperar o uid do usuário
+      const uid = credentials.user?.uid as string
+
+      //recuperar o email do usuário
+      const email = credentials.user?.email as string
+
+      const todos: Todo[] = []
+
+      //criação de um novo documento na coleção de usuarios
+      /**
+       * a função doc te retorna a referencia para um documento na coleção
+       * a partir de seu UID
+       * 
+       * a função set atribui valores ao documento que você esta se referenciando
+       */
+      this.usersCollection.doc(uid).set({
+        uid: uid,
+        email: email,
+        todos: todos
+      })
+
+      //envia o email de verificação
+      credentials.user?.sendEmailVerification()
+    })
+  }
+
   signUpWithEmailAndPassword(email: string, password: string) {
     /**
      * O from transformará a promisse que o metodo signUpWithEmailAndPassword retorna 
@@ -39,31 +67,7 @@ export class AuthService {
      */
     return from(this.authentication.createUserWithEmailAndPassword(email, password))
     .pipe(
-      tap((credentials) => {
-        //recuperar o uid do usuário
-        const uid = credentials.user?.uid as string
-
-        //recuperar o email do usuário
-        const email = credentials.user?.email as string
-
-        const todos: Todo[] = []
-
-        //criação de um novo documento na coleção de usuarios
-        /**
-         * a função doc te retorna a referencia para um documento na coleção
-         * a partir de seu UID
-         * 
-         * a função set atribui valores ao documento que você esta se referenciando
-         */
-        this.usersCollection.doc(uid).set({
-          uid: uid,
-          email: email,
-          todos: todos
-        })
-
-        //envia o email de verificação
-        credentials.user?.sendEmailVerification()
-      })
+     this.saveUserData() 
     )
   }
 
@@ -72,9 +76,13 @@ export class AuthService {
   }
 
   signInWithGoogle() {
-    const googleProvider = new GoogleAuthProvider()
+    //const googleProvider = new GoogleAuthProvider()
+    //return from(this.authentication.signInWithPopup(googleProvider))
 
     return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
+    .pipe(
+      this.saveUserData()
+    )
   }
 
   signOut() {
@@ -85,6 +93,6 @@ export class AuthService {
       })
     )
   }
-
+ 
 
 }
