@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import { from, tap } from 'rxjs';
 import { Todo } from 'src/app/models/Todo';
 import { User } from 'src/app/models/User';
@@ -15,8 +16,17 @@ export class AuthService {
 
   constructor(
     private authentication: AngularFireAuth, // serve para manipular a parte de autenticação do firebase
-    private store: AngularFirestore // serve para manipular a parte de banco de dados do firebase
+    private store: AngularFirestore, // serve para manipular a parte de banco de dados do firebase
+    private router: Router
   ) { }
+
+  get currentUser() {
+    /**
+     * authState retorna um observable que contém o usuário atual se ele estiver logado
+     * ou null se não estiver logado
+     */
+    return this.authentication.authState
+  }
 
   signUpWithEmailAndPassword(email: string, password: string) {
     /**
@@ -58,5 +68,14 @@ export class AuthService {
 
   signInWithEmailAndPassword(email: string, password: string) {
     return from(this.authentication.signInWithEmailAndPassword(email, password))
+  }
+
+  signOut() {
+    return from(this.authentication.signOut())
+    .pipe(
+      tap(() => {
+        this.router.navigateByUrl('/auth/login')
+      })
+    )
   }
 }
