@@ -44,8 +44,8 @@ export class RegisterComponent implements OnInit {
     )
   }
 
-  signInWithGoogle() {
-    this.authService.signInWithGoogle()
+  signUpWithGoogle() {
+    this.authService.signUpWithGoogle()
     .subscribe(
       () => {
         this.snackbar.open('Registrado com sucesso!', 'Ok', { 

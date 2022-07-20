@@ -74,17 +74,22 @@ export class AuthService {
   signInWithEmailAndPassword(email: string, password: string) {
     return from(this.authentication.signInWithEmailAndPassword(email, password))//retorna uma promisse - usa o from para transformar a promisse em um observable
   }
-
-  signInWithGoogle() {
-    //const googleProvider = new GoogleAuthProvider()
-    //return from(this.authentication.signInWithPopup(googleProvider))
-
+  
+  signUpWithGoogle() {
     return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
     .pipe(
       this.saveUserData()
     )
   }
 
+  signInWithGoogle() {
+    //const googleProvider = new GoogleAuthProvider()
+    //return from(this.authentication.signInWithPopup(googleProvider))
+    
+    return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
+    }
+
+    
   signOut() {
     return from(this.authentication.signOut())
     .pipe(

@@ -39,15 +39,40 @@ export class TodosComponent implements OnInit {
   }
 
   create(): void {
-
+    const todo = this.todoForm.value as Todo
+    this.todosService.createTodo(todo)
+    .subscribe(
+      () => {
+        this.snackbar.open('Tarefa criada!', 'ok', { 
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+        this.todoForm.reset()
+        this.loadTodos()
+        this.todoForm.valid
+      }
+    )
+    
   }
 
   delete(todo: Todo): void {
-
+    this.todosService.deleteTodo(todo)
+    .subscribe(
+      () => {
+        this.snackbar.open('Tarefa deletada!', 'ok', { 
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        })
+        this.loadTodos()
+      }
+    )
   }
 
   toggleDone(todo: Todo): void {
-
+    todo.done = !todo.done
+    this.todosService.updateTodo(todo).subscribe()
   }
 
   signOut(): void {
