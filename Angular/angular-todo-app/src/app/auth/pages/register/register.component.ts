@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   }
 
   signUpWithGoogle() {
-    this.authService.signUpWithGoogle()
+    this.authService.signInWithGoogle()
     .subscribe(
       () => {
         this.snackbar.open('Registrado com sucesso!', 'Ok', { 
@@ -53,8 +53,8 @@ export class RegisterComponent implements OnInit {
           horizontalPosition: 'right',
           verticalPosition: 'top'
         })
-
-        this.router.navigateByUrl('/auth/verify-email')
+        
+        this.router.navigateByUrl('/todos')
       }
     )
   }

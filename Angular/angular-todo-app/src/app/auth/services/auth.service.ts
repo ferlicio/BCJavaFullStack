@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   private saveUserData() {
-    return tap((credentials:firebase.default.auth.UserCredential) => {
+    return tap(async (credentials:firebase.default.auth.UserCredential) => {
       //recuperar o uid do usuário
       const uid = credentials.user?.uid as string
 
@@ -39,21 +39,29 @@ export class AuthService {
 
       const todos: Todo[] = []
 
-      //criação de um novo documento na coleção de usuarios
-      /**
-       * a função doc te retorna a referencia para um documento na coleção
-       * a partir de seu UID
-       * 
-       * a função set atribui valores ao documento que você esta se referenciando
-       */
-      this.usersCollection.doc(uid).set({
-        uid: uid,
-        email: email,
-        todos: todos
+      //SELECT * FROM users WHERE email = email;
+      const user = await this.usersCollection.ref.where('email', '==', email).get() //where(param1, teste a ser feito, param2))
+      .then(users => {
+        return users.docs[0]
       })
 
-      //envia o email de verificação
-      credentials.user?.sendEmailVerification()
+      if(user == undefined){
+        //criação de um novo documento na coleção de usuarios
+        /**
+         * a função doc te retorna a referencia para um documento na coleção
+         * a partir de seu UID
+         * 
+         * a função set atribui valores ao documento que você esta se referenciando
+         */
+        this.usersCollection.doc(uid).set({
+          uid: uid,
+          email: email,
+          todos: todos
+        })
+
+        //envia o email de verificação
+        credentials.user?.sendEmailVerification()
+      }
     })
   }
 
@@ -75,19 +83,15 @@ export class AuthService {
     return from(this.authentication.signInWithEmailAndPassword(email, password))//retorna uma promisse - usa o from para transformar a promisse em um observable
   }
   
-  signUpWithGoogle() {
+  signInWithGoogle() {
+    //const googleProvider = new GoogleAuthProvider()
+    //return from(this.authentication.signInWithPopup(googleProvider))
+
     return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
     .pipe(
       this.saveUserData()
     )
   }
-
-  signInWithGoogle() {
-    //const googleProvider = new GoogleAuthProvider()
-    //return from(this.authentication.signInWithPopup(googleProvider))
-    
-    return from(this.authentication.signInWithPopup(new GoogleAuthProvider()))
-    }
 
     
   signOut() {
