@@ -20,11 +20,7 @@ export class AccessTodosGuard implements CanActivate {
     .pipe(
       map((user) => {
         if (user == null) {
-          return this.router.parseUrl('/auth/login'); // parseURL retorna uma urltree e navigatebyUrl retorna uma promise, por isso não pode ser usado aqui
-
-        } else if(!user.emailVerified) { 
-          user.sendEmailVerification()
-          return this.router.parseUrl('/auth/verify-email');
+          return this.router.parseUrl('/auth/login');
 
         } else {
           return true;
